@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forge_gradle_version}", changing: true
+    }
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+
+version = "${mc_version}-${mod_version}"
+group = "meldexun.${mod_id}"
+archivesBaseName = "${mod_name}"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+minecraft {
+    mappings channel: "${mappings_channel}", version: "${mappings_version}"
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
+}
+
+jar {
+    manifest.attributes([
+        'Built-By': 'Meldexun',
+        'Specification-Title': archivesBaseName,
+        'Specification-Version': version,
+        'Specification-Vendor': 'Meldexun',
+        'Implementation-Title': archivesBaseName,
+        'Implementation-Version': version,
+        'Implementation-Vendor': 'Meldexun',
+        'Implementation-Timestamp': new Date().format("yyyy-MM-dd HH:mm:ss")
+    ])
+}
+
+jar.finalizedBy('reobfJar')
